@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+{% block title %}Contact | Nexora Studios{% endblock %}
+
+{% block content %}
+<style>
+
+.contact-section {
+    position: relative;
+    padding: 140px 8%;
+    overflow: hidden;
+}
+
+.contact-section::before {
+    content: "";
+    position: absolute;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(124,58,237,0.15), transparent 70%);
+    top: -200px;
+    right: -200px;
+    z-index: 0;
+}
+
+.contact-container {
+    position: relative;
+    z-index: 2;
+    max-width: 1100px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.contact-left h2 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+.contact-left p {
+    font-size: 18px;
+    color: #9ca3af;
+    margin-bottom: 40px;
+}
+
+.contact-meta {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 2;
+}
+
+.contact-form {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 50px;
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+}
+
+.contact-form input,
+.contact-form textarea,
+.contact-form select {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    padding: 14px 0;
+    margin-bottom: 30px;
+    color: #e5e7eb;
+    font-size: 15px;
+    outline: none;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus,
+.contact-form select:focus {
+    border-bottom: 1px solid #7c3aed;
+}
+
+.contact-form textarea {
+    min-height: 120px;
+    resize: none;
+}
+
+.contact-form button {
+    width: 100%;
+    padding: 15px;
+    border-radius: 30px;
+    border: none;
+    background: linear-gradient(90deg, #7c3aed, #3b82f6);
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+}
+
+.whatsapp-btn {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    padding: 14px;
+    border-radius: 30px;
+    background: #25D366;
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.whatsapp-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(37,211,102,0.5);
+}
+
+@media(max-width: 900px){
+    .contact-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+
+<section class="contact-section">
+    <div class="contact-container">
+
+        <div class="contact-left">
+            <h2>Let’s create something remarkable.</h2>
+            <p>
+                We work with ambitious brands worldwide to build
+                high-performance digital experiences.
+            </p>
+
+            <div class="contact-meta">
+                📧 info@nexorastudios.com <br>
+                🌍 Global Clients <br>
+                ⚡ 24hr Response Time
+            </div>
+        </div>
+
+        <div class="contact-form">
+            <form method="POST">
+                {% csrf_token %}
+
+                <input type="text" id="name" name="name" placeholder="Full Name" required>
+                <input type="email" id="email" name="email" placeholder="Email Address" required>
+
+                <select name="service" id="service" required>
+                    <option value="">Select Service</option>
+                    <option>Web Development</option>
+                    <option>Mobile App Development</option>
+                    <option>Photography</option>
+                    <option>Graphic Design</option>
+                </select>
+
+                <textarea id="message" name="message"
+                    placeholder="Tell us about your project..." required></textarea>
+
+                <button type="submit">Send Inquiry</button>
+            </form>
+
+            <!-- WhatsApp Button -->
+            <a id="whatsappBtn"
+               href="#"
+               target="_blank"
+               class="whatsapp-btn">
+               💬 Chat on WhatsApp Instead
+            </a>
+        </div>
+
+    </div>
+</section>
+
+<script>
+const nameInput = document.getElementById("name");
+const emailInput = document.getElementById("email");
+const serviceSelect = document.getElementById("service");
+const messageInput = document.getElementById("message");
+const whatsappBtn = document.getElementById("whatsappBtn");
+
+
+const phoneNumber = "254720597285";
+
+function updateWhatsAppLink() {
+
+    const name = nameInput.value || "Not provided";
+    const email = emailInput.value || "Not provided";
+    const service = serviceSelect.value || "Not selected";
+    const message = messageInput.value || "No details provided.";
+
+    const fullMessage = `
+Hello Nexora Studios,
+
+Name: ${name}
+Email: ${email}
+Service: ${service}
+
+Project Details:
+${message}
+`;
+
+    const encodedMessage = encodeURIComponent(fullMessage);
+    whatsappBtn.href = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+}
+
+// Update link whenever user types
+nameInput.addEventListener("input", updateWhatsAppLink);
+emailInput.addEventListener("input", updateWhatsAppLink);
+serviceSelect.addEventListener("change", updateWhatsAppLink);
+messageInput.addEventListener("input", updateWhatsAppLink);
+
+// Initialize
+updateWhatsAppLink();
+</script>
+
+{% endblock %}

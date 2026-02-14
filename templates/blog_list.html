@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}Blog | Nexora Studios{% endblock %}
+
+{% block content %}
+<style>
+.blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+.blog-card {
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 15px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.02);
+    transition: 0.3s ease;
+}
+.blog-card:hover {
+    box-shadow: 0 0 40px rgba(124,58,237,0.2);
+}
+.blog-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+.blog-card h3 {
+    font-size: 20px;
+    margin: 15px 20px 10px 20px;
+}
+.blog-card p {
+    margin: 0 20px 15px 20px;
+    line-height: 1.6;
+    color: #9ca3af;
+}
+.blog-card a {
+    display: block;
+    margin: 0 20px 20px 20px;
+    color: #7c3aed;
+    font-weight: 500;
+    text-decoration: none;
+}
+.category-filter a {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #6b7280;
+    font-weight: 500;
+}
+.category-filter a.selected {
+    color: #7c3aed;
+    font-weight: 700;
+}
+.pagination a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #7c3aed;
+}
+.pagination span {
+    color: #6b7280;
+    font-weight: 500;
+}
+</style>
+
+<h1>Our Blog</h1>
+
+<div class="category-filter">
+    <a href="{% url 'blog_list' %}" class="{% if not selected_category %}selected{% endif %}">All</a>
+    {% for category in categories %}
+        <a href="?category={{ category.slug }}" class="{% if selected_category == category.slug %}selected{% endif %}">{{ category.name }}</a>
+    {% endfor %}
+</div>
+
+<div class="blog-grid">
+    {% for post in page_obj %}
+    <div class="blog-card">
+        {% if post.featured_image %}
+        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}">
+        {% endif %}
+        <h3>{{ post.title }}</h3>
+        <p>{{ post.excerpt }}</p>
+        <a href="{% url 'blog_detail' post.slug %}">Read Article →</a>
+    </div>
+    {% empty %}
+        <p style="color:#9ca3af;">No blog posts found.</p>
+    {% endfor %}
+</div>
+
+<div class="pagination" style="text-align:center; margin-top:40px;">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">← Previous</a>
+    {% endif %}
+    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">Next →</a>
+    {% endif %}
+</div>
+
+{% endblock %}

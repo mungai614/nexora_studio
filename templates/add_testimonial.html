@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% block title %}Submit Testimonial | Nexora Studios{% endblock %}
+
+{% block content %}
+<section class="testimonial-section">
+    <div class="testimonial-container">
+        <h2>Submit Your Testimonial</h2>
+        <p>Share your experience with us — we love hearing from our clients!</p>
+
+        <div class="testimonial-form-card">
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert success animate">
+                        {{ message }}
+                    </div>
+
+                    <script>
+                        setTimeout(function(){
+                            window.location.href = "{% url 'testimonials' %}";
+                        }, 3000);
+                    </script>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- Name -->
+                <div class="form-group">
+                    <label>Your Name</label>
+                    {{ form.client_name }}
+                </div>
+
+                <!-- Company -->
+                <div class="form-group">
+                    <label>Company</label>
+                    {{ form.company }}
+                </div>
+
+                <!-- Image Upload -->
+                <div class="form-group">
+                    <label>Profile Image</label>
+                    {{ form.client_image }}
+                    <img id="preview" class="image-preview" />
+                </div>
+
+                <!-- Message -->
+                <div class="form-group">
+                    <label>Your Testimonial</label>
+                    {{ form.message }}
+                </div>
+
+                <!-- Star Rating -->
+                <div class="form-group">
+                    <label>Rating</label>
+                    <div class="stars">
+                        {% for i in "12345" %}
+                            <span class="star" data-value="{{ forloop.counter }}">★</span>
+                        {% endfor %}
+                    </div>
+                    {{ form.rating }}
+                </div>
+
+                <button type="submit">Submit Testimonial</button>
+            </form>
+
+            <div class="form-note">
+                Your testimonial will be reviewed before publication.
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<style>
+.testimonial-section {
+    padding: 120px 8%;
+}
+
+.testimonial-container {
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
+}
+
+.testimonial-form-card {
+    background: rgba(255,255,255,0.03);
+    border-radius: 20px;
+    padding: 35px;
+    backdrop-filter: blur(20px);
+}
+
+.form-group {
+    text-align: left;
+    margin-bottom: 22px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.05);
+    color: white;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    background: #7c3aed;
+    border: none;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #9333ea;
+}
+
+/* Stars */
+.stars {
+    font-size: 28px;
+    cursor: pointer;
+    color: #555;
+}
+
+.star.active {
+    color: #facc15;
+}
+
+/* Image Preview */
+.image-preview {
+    margin-top: 10px;
+    max-width: 100px;
+    border-radius: 50%;
+    display: none;
+}
+
+/* Success Animation */
+.alert.success {
+    background: rgba(34,197,94,0.1);
+    border: 1px solid #22c55e;
+    color: #22c55e;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.animate {
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.form-note {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #9ca3af;
+}
+</style>
+
+<script>
+// ⭐ Star Rating
+const stars = document.querySelectorAll('.star');
+const ratingInput = document.getElementById("id_rating");
+
+stars.forEach(star => {
+    star.addEventListener('click', function() {
+        let value = this.getAttribute('data-value');
+        ratingInput.value = value;
+
+        stars.forEach(s => s.classList.remove('active'));
+        for (let i = 0; i < value; i++) {
+            stars[i].classList.add('active');
+        }
+    });
+});
+
+// 🖼 Image Preview
+const imageInput = document.getElementById("id_client_image");
+const preview = document.getElementById("preview");
+
+imageInput.addEventListener("change", function() {
+    const file = this.files[0];
+    if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+    }
+});
+</script>
+
+{% endblock %}

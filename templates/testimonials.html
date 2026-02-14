@@ -1,0 +1,253 @@
+{% extends 'base.html' %}
+{% block title %}Testimonials | Nexora Studios{% endblock %}
+
+{% block content %}
+<section class="testimonial-section">
+    <div class="testimonial-container">
+        <h2>What Our Clients Say</h2>
+        <p>Real feedback from the brands we help grow.</p>
+
+        <!-- Average Rating Display -->
+        {% if total_reviews > 0 %}
+        <div class="average-rating">
+            <div>
+                <span class="big-rating">{{ average_rating }}</span>
+                <span class="out-of">/ 5.0</span>
+            </div>
+
+            <div class="stars-display">
+                {% for i in "12345" %}
+                    {% if forloop.counter <= average_rating %}
+                        <span class="star filled">★</span>
+                    {% elif forloop.counter|add:"-0.5" <= average_rating %}
+                        <span class="star half">★</span>
+                    {% else %}
+                        <span class="star">★</span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <p class="review-count">Based on {{ total_reviews }} review{{ total_reviews|pluralize }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Submit Button -->
+        <div class="add-testimonial-btn">
+            <a href="{% url 'add_testimonial' %}">Submit Your Testimonial</a>
+        </div>
+
+        <!-- Testimonials Grid -->
+        <div class="testimonial-grid">
+            {% for t in testimonials %}
+            <div class="testimonial-card">
+
+                <div class="client-info">
+                    {% if t.client_image %}
+                        <img src="{{ t.client_image.url }}" alt="{{ t.client_name }}">
+                    {% else %}
+                        <div class="placeholder-img">{{ t.client_name|slice:":1" }}</div>
+                    {% endif %}
+                    <h4>{{ t.client_name }}</h4>
+                    <p>{{ t.company }}</p>
+                </div>
+
+                <!-- Individual Rating -->
+                <div class="rating">
+                    {% for i in "12345" %}
+                        {% if forloop.counter <= t.rating %}
+                            <span class="star filled">★</span>
+                        {% elif forloop.counter|add:"-0.5" <= t.rating %}
+                            <span class="star half">★</span>
+                        {% else %}
+                            <span class="star">★</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <p class="message">"{{ t.message }}"</p>
+
+                {% if request.user.is_staff %}
+                <a href="{% url 'delete_testimonial' t.pk %}"
+                   class="delete-btn"
+                   onclick="return confirm('Are you sure you want to delete this testimonial?');">
+                   Delete
+                </a>
+                {% endif %}
+            </div>
+            {% empty %}
+            <p>No testimonials yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<style>
+.testimonial-section {
+    position: relative;
+    padding: 120px 8%;
+    overflow: hidden;
+}
+
+.testimonial-section::before {
+    content: "";
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(124,58,237,0.15), transparent 70%);
+    top: -150px;
+    right: -150px;
+    z-index: 0;
+}
+
+.testimonial-container {
+    position: relative;
+    z-index: 2;
+    max-width: 1100px;
+    margin: auto;
+    text-align: center;
+}
+
+.testimonial-container h2 {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.testimonial-container p {
+    color: #9ca3af;
+    margin-bottom: 20px;
+}
+
+/* Average Rating */
+.average-rating {
+    margin-bottom: 40px;
+}
+
+.big-rating {
+    font-size: 42px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.out-of {
+    font-size: 18px;
+    color: #9ca3af;
+}
+
+.review-count {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #9ca3af;
+}
+
+.stars-display .star,
+.rating .star {
+    font-size: 20px;
+    color: #555;
+    transition: transform 0.3s ease;
+}
+
+.filled {
+    color: #facc15;
+}
+
+.half {
+    background: linear-gradient(90deg, #facc15 50%, #555 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.testimonial-card:hover .filled {
+    transform: scale(1.2);
+}
+
+/* Grid */
+.testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+/* Card */
+.testimonial-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px;
+    padding: 25px;
+    backdrop-filter: blur(20px);
+    transition: 0.4s ease;
+}
+
+.testimonial-card:hover {
+    border: 1px solid rgba(124,58,237,0.4);
+    box-shadow: 0 0 60px rgba(124,58,237,0.2);
+    transform: translateY(-5px);
+}
+
+.client-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.client-info img,
+.placeholder-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    object-fit: cover;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #7c3aed;
+    font-size: 24px;
+}
+
+.message {
+    color: #9ca3af;
+    font-style: italic;
+    line-height: 1.6;
+}
+
+/* Submit Button */
+.add-testimonial-btn {
+    margin-bottom: 40px;
+}
+
+.add-testimonial-btn a {
+    display: inline-block;
+    padding: 12px 25px;
+    border-radius: 12px;
+    background: #7c3aed;
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.add-testimonial-btn a:hover {
+    background: #9333ea;
+}
+
+/* Delete Button */
+.delete-btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 6px 12px;
+    background: #ef4444;
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.delete-btn:hover {
+    background: #dc2626;
+}
+</style>
+{% endblock %}

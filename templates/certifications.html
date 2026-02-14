@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}Certifications | Nexora Studios{% endblock %}
+{% load static %}
+{% block content %}
+<section class="cert-section">
+    <div class="cert-container">
+        <h2>Our Certifications</h2>
+        <p>Proof of our expertise and commitment to excellence.</p>
+
+        <div class="cert-grid">
+            {% for cert in certifications %}
+            <div class="cert-card">
+                <h3>{{ cert.title }}</h3>
+                <p><strong>{{ cert.organization }}</strong></p>
+                <p>Issued: {{ cert.issue_date }}{% if cert.expiry_date %} | Expires: {{ cert.expiry_date }}{% endif %}</p>
+                {% if  'images/cert.png'%}
+                <a href="{% static 'images/cert.png'%}" target="_blank">View Certificate</a>
+                {% endif %}
+            </div>
+            {% empty %}
+            <p>No certifications available yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<style>
+.cert-section {
+    position: relative;
+    padding: 120px 8%;
+    overflow: hidden;
+}
+
+.cert-section::before {
+    content: "";
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(124,58,237,0.15), transparent 70%);
+    top: -150px;
+    right: -150px;
+    z-index: 0;
+}
+
+.cert-container {
+    position: relative;
+    z-index: 2;
+    max-width: 1100px;
+    margin: auto;
+    text-align: center;
+}
+
+.cert-container h2 {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.cert-container p {
+    color: #9ca3af;
+    margin-bottom: 40px;
+}
+
+.cert-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.cert-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px;
+    padding: 25px;
+    backdrop-filter: blur(20px);
+    transition: 0.4s ease;
+}
+
+.cert-card:hover {
+    border: 1px solid rgba(124,58,237,0.4);
+    box-shadow: 0 0 60px rgba(124,58,237,0.2);
+    transform: translateY(-5px);
+}
+
+.cert-card a {
+    display: inline-block;
+    margin-top: 10px;
+    color: #7c3aed;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.cert-card a:hover {
+    text-decoration: underline;
+}
+</style>
+{% endblock %}

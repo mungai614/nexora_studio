@@ -1,0 +1,269 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nexora Studios | Engineering Digital Excellence</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0f14;
+            color: #e5e7eb;
+        }
+
+        /* Background Glow */
+        body::before {
+            content: "";
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(124,58,237,0.25), transparent 70%);
+            top: -200px;
+            left: -200px;
+            z-index: -1;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 10%;
+            background: rgba(21,21,32,0.7);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 20px;
+            background: linear-gradient(90deg, #7c3aed, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        .navbar a {
+            color: #e5e7eb;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #7c3aed;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 140px 20px 120px;
+            background: linear-gradient(135deg, #151520, #0f0f14);
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #ffffff, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 25px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #9ca3af;
+            margin-bottom: 40px;
+            animation: fadeInUp 1.3s ease;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 10px;
+            transition: 0.3s ease;
+            display: inline-block;
+        }
+
+        .primary {
+            background: linear-gradient(90deg, #7c3aed, #3b82f6);
+            color: white;
+            box-shadow: 0 0 20px rgba(124,58,237,0.4);
+        }
+
+        .primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 35px rgba(124,58,237,0.6);
+        }
+
+        .secondary {
+            border: 2px solid #7c3aed;
+            color: #7c3aed;
+        }
+
+        .secondary:hover {
+            background: #7c3aed;
+            color: white;
+        }
+
+        /* Services */
+        .services {
+            padding: 100px 10%;
+            text-align: center;
+        }
+
+        .services h2 {
+            font-size: 36px;
+            margin-bottom: 60px;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 40px;
+        }
+
+        .card {
+            background: rgba(21,21,32,0.6);
+            backdrop-filter: blur(10px);
+            padding: 40px 30px;
+            border-radius: 16px;
+            transition: 0.4s ease;
+            border: 1px solid rgba(124,58,237,0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 0 40px rgba(124,58,237,0.4);
+            border: 1px solid rgba(124,58,237,0.3);
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            color: #9ca3af;
+            font-size: 15px;
+        }
+
+        /* CTA */
+        .cta {
+            text-align: center;
+            padding: 100px 20px;
+            background: linear-gradient(135deg, #151520, #0f0f14);
+        }
+
+        .cta h2 {
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #0f0f14;
+            color: #6b7280;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media(max-width: 768px){
+            .hero h1 {
+                font-size: 38px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">Nexora Studios</div>
+    <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'services' %}">Services</a></li>
+        <li><a href="{% url 'portfolio' %}">Portfolio</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+
+    <h1>We build, We Design , We Capture</h1>
+
+    <p>We build high-performance websites, mobile apps,graphic design, take photos and creative visual experiences for global brands.</p>
+    <a href="{% url 'portfolio' %}" class="btn primary">View Portfolio</a>
+    <a href="{% url 'contact'%}" class="btn secondary">Start a Project</a>
+</section>
+
+<section class="services">
+    <h2>Our Expertise</h2>
+
+    <div class="service-grid">
+        <div class="card">
+            <h3>💻 Web Development</h3>
+            <p>Corporate websites,  platforms and scalable systems.</p>
+        </div>
+
+        <div class="card">
+            <h3>📱 Mobile Applications</h3>
+            <p>Modern Android & iOS applications engineered for performance.</p>
+        </div>
+
+        <div class="card">
+            <h3>📸 Photography</h3>
+            <p>Professional event, corporate and brand photography.</p>
+        </div>
+
+        <div class="card">
+            <h3>🎨 Creative Design</h3>
+            <p>Premium posters, branding kits and marketing visuals.</p>
+        </div>
+    </div>
+</section>
+
+<section class="cta">
+    <h2>Let’s Build Something Exceptional</h2>
+    <a href="{% url 'services' %}" class="btn primary">Get a Quote</a>
+</section>
+
+<footer>
+    <p>© 2026 Nexora Studios. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

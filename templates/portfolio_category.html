@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}{{ category }} | Nexora Studios{% endblock %}
+
+{% block content %}
+<section class="portfolio-section">
+    <div class="portfolio-container">
+        <h2>{{ category }}</h2>
+
+        <div class="portfolio-grid">
+            {% for project in projects %}
+            <div class="portfolio-card">
+                <img src="{{ project.image.url }}" style="width:100%; border-radius:15px; margin-bottom:20px;">
+                <div class="portfolio-title">{{ project.title }}</div>
+                <div class="portfolio-description">
+                    {{ project.description }}
+                </div>
+
+                {% if project.project_url %}
+                <a href="{{ project.project_url }}" target="_blank" class="btn primary">
+                    Visit Project
+                </a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+{% endblock %}

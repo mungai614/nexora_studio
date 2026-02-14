@@ -1,0 +1,381 @@
+{% extends 'base.html' %}
+{% block title %}Why Choose Us | Nexora Studios{% endblock %}
+{% block content %}
+{% load static %}
+
+<style>
+
+/* ================= HERO ================= */
+.why-hero {
+    padding: 160px 8% 100px;
+    text-align: center;
+    background: linear-gradient(to bottom, #0f0f1a, #0b0b14);
+}
+
+.why-hero h1 {
+    font-size: 52px;
+    margin-bottom: 20px;
+}
+
+.why-hero p {
+    font-size: 18px;
+    color: #9ca3af;
+    max-width: 700px;
+    margin: auto;
+}
+
+/* ================= GRID ================= */
+.why-section {
+    padding: 100px 8%;
+}
+
+.why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+}
+
+.why-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 40px 30px;
+    border-radius: 20px;
+    transition: 0.4s ease;
+}
+
+.why-card:hover {
+    transform: translateY(-8px);
+    border: 1px solid #7c3aed;
+    box-shadow: 0 0 50px rgba(124,58,237,0.2);
+}
+
+.why-card h3 {
+    margin-bottom: 15px;
+}
+
+.why-card p {
+    color: #9ca3af;
+    font-size: 15px;
+}
+
+/* ================= PHOTOGRAPHY & DESIGN ================= */
+.special-section {
+    padding: 100px 8%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+    justify-content: center;
+    background: #0d0d17;
+    border-radius: 20px;
+}
+
+.special-card {
+    background: rgba(255,255,255,0.03);
+    padding: 30px 25px;
+    border-radius: 20px;
+    border: 1px solid rgba(124,58,237,0.2);
+    max-width: 400px;
+    text-align: center;
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+.special-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 50px rgba(124,58,237,0.25);
+}
+
+.special-card img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 20px;
+}
+
+.special-card h4 {
+    margin-bottom: 15px;
+}
+
+.special-card p {
+    font-size: 15px;
+    color: #9ca3af;
+    line-height: 1.6;
+}
+
+/* ================= MODAL ================= */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(8px);
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    z-index: 999;
+}
+
+.modal-content {
+    background: #11111a;
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 1100px;
+    width: 100%;
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from {opacity:0; transform: translateY(20px);}
+    to {opacity:1; transform: translateY(0);}
+}
+
+.close-btn {
+    float: right;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.project-card {
+    background: rgba(255,255,255,0.03);
+    padding: 20px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.project-card:hover {
+    background: rgba(124,58,237,0.1);
+}
+
+.project-card img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+/* Gallery Modal */
+.gallery-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.gallery-modal img {
+    max-width: 90%;
+    max-height: 80%;
+    border-radius: 15px;
+}
+
+/* ================= PROCESS ================= */
+.process-section {
+    padding: 100px 8%;
+    background: #0d0d17;
+}
+
+.process-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: center;
+}
+
+.step {
+    max-width: 250px;
+    text-align: center;
+}
+
+.step-number {
+    font-size: 40px;
+    color: #7c3aed;
+    margin-bottom: 10px;
+}
+
+/* ================= CTA ================= */
+.cta-section {
+    padding: 120px 8%;
+    text-align: center;
+}
+
+.cta-section h2 {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.cta-btn {
+    padding: 15px 35px;
+    background: #7c3aed;
+    border-radius: 50px;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.cta-btn:hover {
+    background: #6d28d9;
+}
+
+@media(max-width:768px){
+    .why-hero h1 {
+        font-size: 36px;
+    }
+}
+
+</style>
+
+<!-- HERO -->
+<section class="why-hero">
+    <h1>Why Choose Nexora Studios</h1>
+    <p>
+        We combine strategy, creativity, and technology to build digital
+        experiences that scale globally and convert consistently.
+    </p>
+</section>
+
+<!-- VALUE GRID -->
+<section class="why-section">
+    <div class="why-grid">
+        <div class="why-card">
+            <h3>Premium Quality</h3>
+            <p>Every project is crafted with performance, security, and global standards in mind.</p>
+        </div>
+
+        <div class="why-card">
+            <h3>Modern Technology</h3>
+            <p>We use the latest frameworks and tools to ensure your platform stays ahead of the competition.</p>
+        </div>
+
+        <div class="why-card">
+            <h3>Business-Driven Strategy</h3>
+            <p>We don’t just build websites — we build systems that generate revenue and growth.</p>
+        </div>
+
+        <div class="why-card">
+            <h3>Global Standards</h3>
+            <p>Serving international clients with scalable solutions optimized for performance worldwide.</p>
+        </div>
+    </div>
+</section>
+
+<!-- PHOTOGRAPHY & DESIGN INTERACTIVE -->
+<section class="special-section">
+    <div class="special-card" >
+
+        <h4>Professional Photography</h4>
+        <p>Capture your brand, events, and products with cinematic photography that tells your story.</p>
+    </div>
+
+    <div class="special-card" >
+
+        <h4>Creative Graphic Design</h4>
+        <p>From posters to full branding kits, our designs are tailored to engage audiences and elevate your brand.</p>
+    </div>
+</section>
+
+<!-- CATEGORY MODAL -->
+<div id="categoryModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" >&times;</span>
+        <h2 id="categoryTitle"></h2>
+        <div class="project-grid" id="projectGrid"></div>
+    </div>
+</div>
+
+<!-- IMAGE GALLERY MODAL -->
+<div id="galleryModal" class="gallery-modal" >
+    <img id="galleryImage">
+</div>
+
+<script>
+
+
+function openCategory(category) {
+    const modal = document.getElementById('categoryModal');
+    const grid = document.getElementById('projectGrid');
+    const title = document.getElementById('categoryTitle');
+
+    grid.innerHTML = '';
+    title.textContent = category === 'photo' ? 'Photography Projects' : 'Graphic Design Projects';
+
+    projects[category].forEach(project => {
+        const card = document.createElement('div');
+        card.classList.add('project-card');
+
+        card.innerHTML = `
+            <img src="${project.thumb}">
+            <h4>${project.title}</h4>
+        `;
+
+        card.onclick = () => openGallery(project.images);
+        grid.appendChild(card);
+    });
+
+    modal.style.display = "flex";
+}
+
+function closeCategory() {
+    document.getElementById('categoryModal').style.display = "none";
+}
+
+function openGallery(images) {
+    const gallery = document.getElementById('galleryModal');
+    const img = document.getElementById('galleryImage');
+
+    img.src = images[0];
+    gallery.style.display = "flex";
+}
+
+function closeGallery() {
+    document.getElementById('galleryModal').style.display = "none";
+}
+</script>
+
+<!-- PROCESS -->
+<section class="process-section">
+    <h2 style="text-align:center; margin-bottom:60px;">Our Process</h2>
+
+    <div class="process-steps">
+        <div class="step">
+            <div class="step-number">01</div>
+            <h4>Discovery</h4>
+            <p>We understand your goals and define the strategy.</p>
+        </div>
+
+        <div class="step">
+            <div class="step-number">02</div>
+            <h4>Design</h4>
+            <p>We craft a premium user-focused experience.</p>
+        </div>
+
+        <div class="step">
+            <div class="step-number">03</div>
+            <h4>Development</h4>
+            <p>We build scalable, secure, high-performance systems.</p>
+        </div>
+
+        <div class="step">
+            <div class="step-number">04</div>
+            <h4>Launch & Support</h4>
+            <p>We deploy, monitor, and continuously improve.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <h2>Ready to Build Something Exceptional?</h2>
+    <a href="{% url 'contact' %}" class="cta-btn">Start Your Project</a>
+</section>
+
+{% endblock %}

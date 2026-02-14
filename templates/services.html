@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% block title %}Services | Nexora Studios{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* SECTION */
+.services-section {
+    padding: 140px 8%;
+    position: relative;
+}
+
+/* Background glow */
+.services-section::before {
+    content: "";
+    position: absolute;
+    width: 900px;
+    height: 900px;
+    background: radial-gradient(circle, rgba(124,58,237,0.1), transparent 70%);
+    bottom: -300px;
+    right: -300px;
+    z-index: 0;
+}
+
+.services-container {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+}
+
+.services-container h2 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.services-container p.subtitle {
+    color: #9ca3af;
+    margin-bottom: 70px;
+    font-size: 18px;
+}
+
+/* GRID */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+}
+
+/* CARD */
+.service-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px;
+    padding: 50px 35px;
+    transition: 0.4s ease;
+    text-align: left;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    border: 1px solid rgba(124,58,237,0.6);
+    box-shadow: 0 0 60px rgba(124,58,237,0.2);
+}
+
+/* ICON STYLE */
+.service-icon {
+    font-size: 32px;
+    margin-bottom: 25px;
+}
+
+/* TITLE */
+.service-card h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+/* DESCRIPTION */
+.service-card p {
+    color: #9ca3af;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* CTA */
+.services-cta {
+    margin-top: 100px;
+}
+
+.services-cta h3 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+</style>
+
+<section class="services-section">
+    <div class="services-container">
+
+        <h2>What We Do</h2>
+        <p class="subtitle">
+            We craft scalable digital solutions and premium visual experiences
+            for ambitious brands worldwide.
+        </p>
+
+        <div class="services-grid">
+
+            <div class="service-card">
+                <div class="service-icon">💻</div>
+                <h3>Web Development</h3>
+                <p>
+                    High-performance corporate websites,  platforms,
+                    dashboards, and eCommerce systems built for scale and speed.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">📱</div>
+                <h3>Mobile App Development</h3>
+                <p>
+                    Modern Android & iOS applications designed with seamless
+                    UX, powerful backend systems, and global deployment.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">📸</div>
+                <h3>Photography</h3>
+                <p>
+                    Professional event, corporate, and branding photography
+                    crafted to elevate your visual presence.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🎨</div>
+                <h3>Graphic Design</h3>
+                <p>
+                    Strategic posters, marketing materials, and complete
+                    brand identity systems that drive engagement.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="services-cta">
+            <h3>Ready to Start Your Project?</h3>
+            <a href="{% url 'contact' %}" class="btn primary">Request a Quote</a>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

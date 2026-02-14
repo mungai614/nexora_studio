@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}{{ post.title }} | Nexora Studios{% endblock %}
+
+{% block content %}
+<style>
+.blog-detail img {
+    max-width: 100%;
+    margin: 20px 0;
+    border-radius: 15px;
+}
+.blog-detail h2, .blog-detail h3 {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+.blog-detail p {
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+.related-posts {
+    margin-top: 50px;
+}
+.related-posts h2 {
+    margin-bottom: 20px;
+}
+.related-posts .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+</style>
+
+<article class="blog-detail">
+    <h1>{{ post.title }}</h1>
+    <img src="{{ post.featured_image.url }}" alt="{{ post.title }}">
+    <p>{{ post.content|linebreaks }}</p>
+</article>
+
+{% if related_posts %}
+<div class="related-posts">
+    <h2>Related Articles</h2>
+    <div class="blog-grid">
+        {% for rpost in related_posts %}
+        <div class="blog-card">
+            <img src="{{ rpost.featured_image.url }}" alt="{{ rpost.title }}">
+            <h3>{{ rpost.title }}</h3>
+            <a href="{% url 'blog_detail' rpost.slug %}">Read Article →</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

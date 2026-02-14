@@ -1,0 +1,207 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Nexora Studios{% endblock %}</title>
+    <meta name="description" content="Premium Web Development, Mobile Apps, Photography and Creative Design.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<style>
+    /* ===== GLOBAL ===== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #0b0b12;
+    color: #e5e7eb;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Subtle background glow */
+body::before {
+    content: "";
+    position: fixed;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(124,58,237,0.12), transparent 70%);
+    top: -200px;
+    right: -200px;
+    z-index: -1;
+}
+
+/* ===== NAVBAR ===== */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 8%;
+    background: rgba(15,15,25,0.75);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 35px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #9ca3af;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    transition: 0.3s ease;
+    position: relative;
+}
+
+/* underline animation */
+.navbar a::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: -6px;
+    left: 0;
+    background: #7c3aed;
+    transition: 0.3s ease;
+}
+
+.navbar a:hover {
+    color: #ffffff;
+}
+
+.navbar a:hover::after {
+    width: 100%;
+}
+
+/* ===== GENERAL SECTION SPACING ===== */
+
+section {
+    padding: 120px 8%;
+}
+
+/* ===== BUTTON STYLE (global use) ===== */
+
+.btn {
+    display: inline-block;
+    padding: 14px 30px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+.primary {
+    background: linear-gradient(90deg, #7c3aed, #3b82f6);
+    color: white;
+    border: none;
+}
+
+.primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 40px rgba(124,58,237,0.5);
+}
+
+.secondary {
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #e5e7eb;
+}
+
+.secondary:hover {
+    border: 1px solid #7c3aed;
+    color: #7c3aed;
+}
+
+/* ===== FOOTER ===== */
+
+footer {
+    margin-top: 120px;
+    padding: 60px 8%;
+    background: #0f0f18;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+}
+
+.footer-content p {
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media(max-width: 900px) {
+    .navbar {
+        padding: 18px 6%;
+    }
+
+    .navbar ul {
+        gap: 20px;
+    }
+
+    section {
+        padding: 90px 6%;
+    }
+}
+
+</style>
+<body>
+
+<nav class="navbar">
+    <div class="logo">Nexora Studios</div>
+    <ul>
+        <nav>
+    <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+
+
+        <li><a href="{% url 'services' %}">services</a></li>
+        <li><a href="{% url 'portfolio' %}">portfolio</a></li>
+
+        <li><a href="{% url 'testimonials' %}">Testimonials</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+
+    </ul>
+</nav>
+
+    </ul>
+</nav>
+
+{% block content %}{% endblock %}
+
+<footer>
+    <div class="footer-content">
+        <p>© 2026 Nexora Studios. All rights reserved.</p>
+        <p>Email: info@nexorastudios.com</p>
+        <p>Serving clients worldwide 🌍</p>
+    </div>
+</footer>
+
+</body>
+</html>
