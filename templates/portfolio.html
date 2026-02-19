@@ -4,22 +4,10 @@
 {% block content %}
 
 <style>
-
 /* ================= SECTION ================= */
-.portfolio-section {
-    padding: 140px 8%;
-}
-
-.portfolio-container {
-    max-width: 1200px;
-    margin: auto;
-}
-
-.portfolio-container h2 {
-    font-size: 48px;
-    margin-bottom: 60px;
-    text-align: center;
-}
+.portfolio-section { padding: 140px 8%; }
+.portfolio-container { max-width: 1200px; margin: auto; }
+.portfolio-container h2 { font-size: 48px; margin-bottom: 60px; text-align: center; }
 
 /* ================= CATEGORY GRID ================= */
 .portfolio-grid {
@@ -27,7 +15,6 @@
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 40px;
 }
-
 .portfolio-card {
     background: rgba(255,255,255,0.03);
     border: 1px solid rgba(255,255,255,0.08);
@@ -37,7 +24,6 @@
     transition: 0.4s ease;
     text-align: center;
 }
-
 .portfolio-card:hover {
     transform: translateY(-10px);
     border: 1px solid #7c3aed;
@@ -56,7 +42,6 @@
     padding: 40px;
     z-index: 999;
 }
-
 .modal-content {
     background: #11111a;
     padding: 40px;
@@ -65,226 +50,235 @@
     width: 100%;
 }
 
-.close-btn {
-    float: right;
-    font-size: 28px;
-    cursor: pointer;
-}
-
 /* ================= PROJECT GRID ================= */
 .project-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 25px;
     margin-top: 30px;
 }
-
 .project-card {
     background: rgba(255,255,255,0.04);
-    padding: 20px;
+    padding: 15px;
     border-radius: 15px;
     cursor: pointer;
     transition: 0.3s;
-}
-
-.project-card:hover {
-    background: rgba(124,58,237,0.15);
-}
-
-.project-card img {
-    width: 100%;
-    border-radius: 10px;
-    margin-bottom: 10px;
-}
-
-/* ================= IMAGE SLIDER ================= */
-.slider-container {
-    position: relative;
     text-align: center;
 }
+.project-card:hover { background: rgba(124,58,237,0.15); }
+.project-card img { width: 100%; border-radius: 10px; margin-bottom: 10px; }
 
+/* ================= ADVANCED SLIDER ================= */
+.slider-container { position: relative; text-align: center; }
 .slider-container img {
     max-width: 90%;
-    max-height: 75vh;
+    max-height: 70vh;
     border-radius: 15px;
+    transition: opacity 0.4s ease;
 }
-
 .slider-btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 30px;
+    font-size: 28px;
     background: rgba(255,255,255,0.1);
     padding: 10px 18px;
     cursor: pointer;
     border-radius: 50%;
 }
-
 .prev-btn { left: 10px; }
 .next-btn { right: 10px; }
+.slider-btn:hover { background: #7c3aed; }
 
-.slider-btn:hover {
+/* ================= THUMBNAILS ================= */
+.thumbnail-strip {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    margin-top: 20px;
+    justify-content: center;
+}
+.thumbnail-strip img {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    cursor: pointer;
+    border-radius: 8px;
+    opacity: 0.6;
+    transition: 0.3s;
+}
+.thumbnail-strip img.active { border: 2px solid #7c3aed; opacity: 1; }
+#backWebBtn {
+    display: none;
+    margin: 70px 0 20px 0; /* top margin 70px to clear fixed navbar */
+    padding: 8px 15px;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
     background: #7c3aed;
+    color: #fff;
 }
 
+.close-btn { float: right; font-size: 26px; cursor: pointer; }
 </style>
 
 <section class="portfolio-section">
     <div class="portfolio-container">
         <h2>Our Portfolio</h2>
-
-
+        <h3 style="text-align:center">Click To View</h3>
         <div class="portfolio-grid">
-            <div class="portfolio-card" onclick="openCategory('web')">
-                <h3>Web Development.</h3>
-                <h4>click me</h4>
-            </div>
-
-            <div class="portfolio-card" onclick="openCategory('photo')">
-                <h3>Photography.</h3>
-                <h4>click me</h4>
-            </div>
-
-            <div class="portfolio-card" onclick="openCategory('design')">
-                <h3>Creative Design.</h3>
-                <h4>click me</h4>
-            </div>
+            <div class="portfolio-card" onclick="openWebCategories()"><h3>Web/App Development</h3></div>
+            <div class="portfolio-card" onclick="openPhotography()"><h3>Photography</h3></div>
+            <div class="portfolio-card" onclick="openCreativeDesign()"><h3>Graphic Design</h3></div>
         </div>
     </div>
 </section>
 
-<!-- CATEGORY MODAL -->
-<div id="categoryModal" class="modal">
+<!-- WEB SUBCATEGORIES MODAL -->
+<div id="webCategoryModal" class="modal">
     <div class="modal-content">
-        <span class="close-btn" onclick="closeCategory()">&times;</span>
-        <h2 id="categoryTitle"></h2>
-        <div id="projectGrid" class="project-grid"></div>
+        <span class="close-btn" onclick="closeModal('webCategoryModal')">&times;</span>
+        <h2>Web Subcategories</h2>
+        <div id="subCategoryGrid" class="project-grid"></div>
     </div>
 </div>
 
 <!-- GALLERY MODAL -->
 <div id="galleryModal" class="modal">
     <div class="modal-content slider-container">
-        <span class="close-btn" onclick="closeGallery()">&times;</span>
+        <span class="close-btn" onclick="closeModal('galleryModal')">&times;</span>
+        <button id="backWebBtn" onclick="backToWebCategories()">← Back to Web Subcategories</button>
         <span class="slider-btn prev-btn" onclick="prevImage()">‹</span>
         <img id="sliderImage">
         <span class="slider-btn next-btn" onclick="nextImage()">›</span>
+        <div id="thumbnailStrip" class="thumbnail-strip"></div>
     </div>
 </div>
 
 <script>
+// ================= IMAGES =================
+const photographyImages = [
+    "{% static 'images/photo1.png' %}",
+    "{% static 'images/photo2.png' %}",
+    "{% static 'images/photo3.png' %}"
+];
 
-let currentImages = [];
-let currentIndex = 0;
+const creativeDesignImages = [
+    "{% static 'images/graphic1.jpg' %}",
+    "{% static 'images/graphic2.jpg' %}",
+    "{% static 'images/graphic3.jpg'%}",
+    "{% static 'images/graphic4.jpg'%}",
+    "{% static 'images/graphic5.jpg'%}",
+    "{% static 'images/graphic6.jpg'%}",
+    "{% static 'images/graphic7.jpg'%}"
+];
 
-const projects = {
-    web: [
-        {
-            title: "Stock management System",
-
-            thumb: "{% static 'images/one.png' %}",
-            images: [
-                "{% static 'images/one.png' %}",
-                "{% static 'images/one.png' %}",
-                "{% static 'images/one.png' %}"
-            ]
-        },
-        {
-            title: "Chemist management System",
-            thumb: "{% static 'images/two.png' %}",
-            images: [
-                "{% static 'images/two.png' %}",
-                "{% static 'images/two.png' %}"
-            ]
-        },
-        {
-            title: "Organization management System",
-            thumb: "{% static 'images/three.png' %}",
-            images: [
-                "{% static 'images/three.png' %}",
-                "{% static 'images/three.png' %}"
-            ]
-        },
-        {
-            title: "Mental support $ addiction recovery",
-            thumb: "{% static 'images/four.png' %}",
-            images: [
-                "{% static 'images/four.png' %}",
-                "{% static 'images/four.png' %}"
-            ]
-        }
-    ],
-
-    photo: [
-        {
-            title: "Event Coverage 2025",
-            thumb: "{% static 'images/two.png' %}",
-            images: [
-                "{% static 'images/two.png' %}",
-                "{% static 'images/one.png' %}"
-            ]
-        }
-    ],
-
-    design: [
-        {
-            title: "Marketing Poster Campaign",
-            thumb: "{% static 'images/one.png' %}",
-            images: [
-                "{% static 'images/one.png' %}",
-                "{% static 'images/two.png' %}"
-            ]
-        }
-    ]
+// ================= WEB SUBCATEGORIES =================
+const webSubcategories = {
+    admin: { thumb: "{% static 'images/admin2.jpg' %}", images: ["{% static 'images/admin3.jpg' %}", "{% static 'images/admin2.jpg' %}", "{% static 'images/admin4.jpg' %}"] },
+    medical: { thumb: "{% static 'images/med1.jpg' %}", images: ["{% static 'images/med2.jpg' %}", "{% static 'images/med1.jpg' %}", "{% static 'images/med3.jpg' %}"] },
+    portfolio: { thumb: "{% static 'images/port1.jpg'%}", images: ["{% static 'images/port2.jpg' %}", "{% static 'images/port1.jpg' %}", "{% static 'images/port3.jpg' %}"] },
+    construction: { thumb: "{% static 'images/con1.jpg' %}", images: ["{% static 'images/con2.jpg' %}", "{% static 'images/con1.jpg' %}", "{% static 'images/con2.jpg' %}"] },
+    photography: { thumb: "{% static 'images/phot1.jpg' %}", images: ["{% static 'images/phot2.jpg' %}", "{% static 'images/phot1.jpg' %}", "{% static 'images/phot2.jpg' %}"] },
+    restaurant: { thumb: "{% static 'images/rest1.jpg' %}", images: ["{% static 'images/rest2.jpg' %}", "{% static 'images/rest1.jpg' %}", "{% static 'images/rest3.jpg' %}"] }
 };
 
-function openCategory(category) {
-    const modal = document.getElementById('categoryModal');
-    const grid = document.getElementById('projectGrid');
-    const title = document.getElementById('categoryTitle');
+// ================= CURRENT STATE =================
+let currentIndex = 0;
+let currentImages = [];
+let currentCategory = ''; // stores the current web subcategory
+let startX = 0;
 
+// ================= MODAL FUNCTIONS =================
+function openWebCategories() {
+    const grid = document.getElementById('subCategoryGrid');
     grid.innerHTML = '';
-    title.textContent = category.toUpperCase();
-
-    projects[category].forEach(project => {
+    for (let sub in webSubcategories) {
         const card = document.createElement('div');
         card.classList.add('project-card');
-        card.innerHTML = `
-            <img src="${project.thumb}">
-            <h4>${project.title}</h4>
-        `;
-        card.onclick = () => openGallery(project.images);
+        card.innerHTML = `<img src="${webSubcategories[sub].thumb}"><h4>${sub.charAt(0).toUpperCase() + sub.slice(1)}</h4>`;
+        card.onclick = () => openWebGallery(sub);
         grid.appendChild(card);
-    });
-
-    modal.style.display = "flex";
+    }
+    document.getElementById('webCategoryModal').style.display = 'flex';
 }
 
-function closeCategory() {
-    document.getElementById('categoryModal').style.display = "none";
-}
-
-function openGallery(images) {
-    currentImages = images;
+function openWebGallery(sub) {
+    currentCategory = sub;
+    currentImages = webSubcategories[sub].images;
     currentIndex = 0;
-    document.getElementById('sliderImage').src = currentImages[currentIndex];
-    document.getElementById('galleryModal').style.display = "flex";
+    document.getElementById('galleryModal').style.display = 'flex';
+    document.getElementById('backWebBtn').style.display = 'inline-block';
+    renderImage();
+    renderThumbnails();
+    document.getElementById('webCategoryModal').style.display = 'none';
 }
 
-function closeGallery() {
-    document.getElementById('galleryModal').style.display = "none";
+function backToWebCategories() {
+    document.getElementById('webCategoryModal').style.display = 'flex';
+    document.getElementById('galleryModal').style.display = 'none';
 }
 
-function nextImage() {
-    currentIndex = (currentIndex + 1) % currentImages.length;
-    document.getElementById('sliderImage').src = currentImages[currentIndex];
+// Photography & Creative Design
+function openPhotography() {
+    currentImages = photographyImages;
+    currentIndex = 0;
+    currentCategory = '';
+    document.getElementById('backWebBtn').style.display = 'none';
+    document.getElementById('galleryModal').style.display = 'flex';
+    renderImage();
+    renderThumbnails();
+}
+function openCreativeDesign() {
+    currentImages = creativeDesignImages;
+    currentIndex = 0;
+    currentCategory = '';
+    document.getElementById('backWebBtn').style.display = 'none';
+    document.getElementById('galleryModal').style.display = 'flex';
+    renderImage();
+    renderThumbnails();
 }
 
-function prevImage() {
-    currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
-    document.getElementById('sliderImage').src = currentImages[currentIndex];
+// ================= SLIDER FUNCTIONS =================
+function renderImage() {
+    const img = document.getElementById('sliderImage');
+    img.style.opacity = 0;
+    setTimeout(() => { img.src = currentImages[currentIndex]; img.style.opacity = 1; updateActiveThumb(); }, 200);
+}
+function nextImage() { currentIndex = (currentIndex + 1) % currentImages.length; renderImage(); }
+function prevImage() { currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; renderImage(); }
+function renderThumbnails() {
+    const strip = document.getElementById('thumbnailStrip');
+    strip.innerHTML = '';
+    currentImages.forEach((src,index) => {
+        const thumb = document.createElement('img');
+        thumb.src = src;
+        thumb.onclick = () => { currentIndex=index; renderImage(); };
+        strip.appendChild(thumb);
+    });
+}
+function updateActiveThumb() {
+    const thumbs = document.querySelectorAll('#thumbnailStrip img');
+    thumbs.forEach((thumb,index) => thumb.classList.toggle('active', index===currentIndex));
 }
 
+// ================= MODAL CLOSE =================
+function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
+
+// ================= KEYBOARD & SWIPE =================
+document.addEventListener('keydown', e => {
+    if (document.getElementById('galleryModal').style.display==='flex') {
+        if (e.key==='ArrowRight') nextImage();
+        if (e.key==='ArrowLeft') prevImage();
+        if (e.key==='Escape') closeModal('galleryModal');
+    }
+});
+document.getElementById('galleryModal').addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
+document.getElementById('galleryModal').addEventListener('touchend', e => {
+    let endX = e.changedTouches[0].clientX;
+    if (startX - endX > 50) nextImage();
+    if (endX - startX > 50) prevImage();
+});
 </script>
 
 {% endblock %}
