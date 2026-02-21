@@ -43,8 +43,26 @@ class BlogPostAdmin(admin.ModelAdmin):
 
 
 
+from django.contrib import admin
+from .models import Testimonial
+
+
 @admin.register(Testimonial)
 class TestimonialAdmin(admin.ModelAdmin):
-    list_display = ('client_name', 'company', 'is_approved', 'created_at')
-    list_filter = ('is_approved',)
-    list_editable = ('is_approved',)
+    list_display = (
+        'client_name',
+        'company',
+        'rating',
+        'is_approved',
+        'created_at'
+    )
+
+    list_filter = ('is_approved', 'rating', 'created_at')
+    search_fields = ('client_name', 'company', 'message')
+    ordering = ('-created_at',)
+
+    actions = ['approve_testimonials']
+
+    @admin.action(description="Approve selected testimonials")
+    def approve_testimonials(self, request, queryset):
+        queryset.update(is_approved=True)

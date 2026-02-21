@@ -158,19 +158,24 @@ from techcompany.models import Testimonial
 import uuid
 from django.shortcuts import render
 
-def testimonials(request):
-    valid_testimonials = []
 
-    for t in Testimonial.objects.all():
-        try:
-            uuid.UUID(str(t.approval_token))  # only keep valid UUIDs
-            valid_testimonials.append(t)
-        except (ValueError, TypeError):
-            pass  # skip this testimonial entirely
+def testimonials(request):
+    testimonials = Testimonial.objects.filter(
+        is_approved=True
+    ).order_by('-created_at')
+
+    total_reviews = testimonials.count()
+    average_rating = (
+        sum(t.rating for t in testimonials) / total_reviews
+        if total_reviews > 0 else 0
+    )
 
     return render(request, 'testimonials.html', {
-        'testimonials': valid_testimonials
+        'testimonials': testimonials,
+        'total_reviews': total_reviews,
+        'average_rating': round(average_rating, 1),
     })
+
 
 # views.py
 from django.shortcuts import render, redirect
@@ -184,39 +189,28 @@ from django.core.mail import send_mail
 from django.urls import reverse
 from django.conf import settings
 
+from django.contrib import messages
+from django.contrib import messages
+
 def add_testimonial(request):
     if request.method == "POST":
         form = TestimonialForm(request.POST, request.FILES)
         if form.is_valid():
-            testimonial = form.save()
+            testimonial = form.save(commit=False)
+            testimonial.is_approved = False
+            testimonial.save()
 
-            approval_link = request.build_absolute_uri(
-                reverse('approve_testimonial', args=[testimonial.approval_token])
+            messages.success(
+                request,
+                "Thank you! Your testimonial has been submitted and will be posted once approved by our admin."
             )
 
-            send_mail(
-                subject="New Testimonial Pending Approval",
-                message=f"""
-A new testimonial was submitted.
+            return redirect('add_testimonial')
 
-Client: {testimonial.client_name}
-Company: {testimonial.company}
-Rating: {testimonial.rating}
-
-Approve here:
-{approval_link}
-""",
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=["your@email.com"],
-            )
-
-            return redirect('testimonials')
     else:
         form = TestimonialForm()
 
     return render(request, 'add_testimonial.html', {'form': form})
-
-
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import get_object_or_404, redirect
 

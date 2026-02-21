@@ -9,16 +9,35 @@
 
         <div class="testimonial-form-card">
 
+            <!-- ✅ Success Message With Countdown + Redirect -->
             {% if messages %}
                 {% for message in messages %}
-                    <div class="alert success animate">
-                        {{ message }}
+                    <div id="success-box" class="alert success animate">
+                        <div>{{ message }}</div>
+                        <div class="redirect-text">
+                            Redirecting in <span id="countdown">3</span>...
+                        </div>
                     </div>
 
                     <script>
-                        setTimeout(function(){
-                            window.location.href = "{% url 'testimonials' %}";
-                        }, 3000);
+                        let seconds = 3;
+                        const countdownEl = document.getElementById("countdown");
+                        const successBox = document.getElementById("success-box");
+
+                        const interval = setInterval(function() {
+                            seconds--;
+                            countdownEl.textContent = seconds;
+
+                            if (seconds <= 0) {
+                                clearInterval(interval);
+                                successBox.style.opacity = "0";
+                                successBox.style.transform = "translateY(-10px)";
+
+                                setTimeout(function() {
+                                    window.location.href = "{% url 'testimonials' %}";
+                                }, 400);
+                            }
+                        }, 1000);
                     </script>
                 {% endfor %}
             {% endif %}
@@ -26,32 +45,27 @@
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
 
-                <!-- Name -->
                 <div class="form-group">
                     <label>Your Name</label>
                     {{ form.client_name }}
                 </div>
 
-                <!-- Company -->
                 <div class="form-group">
-                    <label>Company</label>
+                    <label>Service Given</label>
                     {{ form.company }}
                 </div>
 
-                <!-- Image Upload -->
                 <div class="form-group">
                     <label>Profile Image</label>
                     {{ form.client_image }}
                     <img id="preview" class="image-preview" />
                 </div>
 
-                <!-- Message -->
                 <div class="form-group">
                     <label>Your Testimonial</label>
                     {{ form.message }}
                 </div>
 
-                <!-- Star Rating -->
                 <div class="form-group">
                     <label>Rating</label>
                     <div class="stars">
@@ -66,7 +80,7 @@
             </form>
 
             <div class="form-note">
-                Your testimonial will be reviewed before publication.
+                Your testimonial will be reviewed and published once approved by our admin.
             </div>
 
         </div>
@@ -114,6 +128,7 @@ button {
     color: white;
     font-weight: 600;
     cursor: pointer;
+    transition: 0.3s ease;
 }
 
 button:hover {
@@ -139,14 +154,21 @@ button:hover {
     display: none;
 }
 
-/* Success Animation */
+/* Success Message */
 .alert.success {
     background: rgba(34,197,94,0.1);
     border: 1px solid #22c55e;
     color: #22c55e;
-    padding: 12px;
+    padding: 14px;
     border-radius: 10px;
     margin-bottom: 20px;
+    transition: all 0.4s ease;
+}
+
+.redirect-text {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #86efac;
 }
 
 .animate {
@@ -186,13 +208,15 @@ stars.forEach(star => {
 const imageInput = document.getElementById("id_client_image");
 const preview = document.getElementById("preview");
 
-imageInput.addEventListener("change", function() {
-    const file = this.files[0];
-    if (file) {
-        preview.src = URL.createObjectURL(file);
-        preview.style.display = "block";
-    }
-});
+if (imageInput) {
+    imageInput.addEventListener("change", function() {
+        const file = this.files[0];
+        if (file) {
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = "block";
+        }
+    });
+}
 </script>
 
 {% endblock %}
