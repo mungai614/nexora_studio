@@ -6,11 +6,11 @@
     <title>{% block title %}Nexora Studios{% endblock %}</title>
     <meta name="description" content="Premium Web Development, Mobile Apps, Photography and Creative Design.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="{% static 'images/admin1.png' %}">
-</head>
-<style>
-    /* ===== GLOBAL ===== */
+    <link rel="icon" href="{% static 'images/admin1.png' %}">
 
+<style>
+
+/* ===== GLOBAL RESET ===== */
 * {
     margin: 0;
     padding: 0;
@@ -23,22 +23,32 @@ body {
     color: #e5e7eb;
     line-height: 1.6;
     overflow-x: hidden;
+    position: relative;
 }
 
-/* Subtle background glow */
+/* ===== BLURRED BACKGROUND IMAGE ===== */
 body::before {
     content: "";
     position: fixed;
-    width: 800px;
-    height: 800px;
-    background: radial-gradient(circle, rgba(124,58,237,0.12), transparent 70%);
-    top: -200px;
-    right: -200px;
+    inset: 0;
+    background: url("{% static 'images/img.png' %}") center/cover no-repeat;
+    filter: blur(14px) brightness(0.75);
+    transform: scale(1.1);
+    z-index: -2;
+}
+
+/* ===== OVERLAY (keeps text readable + subtle purple glow) ===== */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at top right, rgba(124,58,237,0.15), transparent 60%),
+        linear-gradient(rgba(11,11,18,0.65), rgba(11,11,18,0.75));
     z-index: -1;
 }
 
 /* ===== NAVBAR ===== */
-
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -56,6 +66,9 @@ body::before {
     font-size: 20px;
     font-weight: 600;
     letter-spacing: 1px;
+    background: linear-gradient(90deg, #7c3aed, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .navbar ul {
@@ -94,13 +107,11 @@ body::before {
 }
 
 /* ===== GENERAL SECTION SPACING ===== */
-
 section {
     padding: 120px 8%;
 }
 
-/* ===== BUTTON STYLE (global use) ===== */
-
+/* ===== BUTTONS ===== */
 .btn {
     display: inline-block;
     padding: 14px 30px;
@@ -134,11 +145,11 @@ section {
 }
 
 /* ===== FOOTER ===== */
-
 footer {
     margin-top: 120px;
     padding: 60px 8%;
-    background: #0f0f18;
+    background: rgba(15,15,25,0.8);
+    backdrop-filter: blur(10px);
     border-top: 1px solid rgba(255,255,255,0.05);
 }
 
@@ -149,13 +160,12 @@ footer {
 }
 
 .footer-content p {
-    color: #6b7280;
+    color: #9ca3af;
     font-size: 14px;
     margin-bottom: 10px;
 }
 
 /* ===== RESPONSIVE ===== */
-
 @media(max-width: 900px) {
     .navbar {
         padding: 18px 6%;
@@ -163,6 +173,7 @@ footer {
 
     .navbar ul {
         gap: 20px;
+        flex-wrap: wrap;
     }
 
     section {
@@ -171,26 +182,19 @@ footer {
 }
 
 </style>
+</head>
+
 <body>
 
 <nav class="navbar">
     <div class="logo">Nexora Studios</div>
     <ul>
-        <nav>
-    <ul>
         <li><a href="{% url 'home' %}">Home</a></li>
-
-
-        <li><a href="{% url 'services' %}">services</a></li>
-        <li><a href="{% url 'portfolio' %}">portfolio</a></li>
-        <li><a href="{% url 'why_choose_us' %}">why choose us</a></li>
-
+        <li><a href="{% url 'services' %}">Services</a></li>
+        <li><a href="{% url 'portfolio' %}">Portfolio</a></li>
+        <li><a href="{% url 'why_choose_us' %}">Why Choose Us</a></li>
         <li><a href="{% url 'testimonials' %}">Testimonials</a></li>
         <li><a href="{% url 'contact' %}">Contact</a></li>
-
-    </ul>
-</nav>
-
     </ul>
 </nav>
 
